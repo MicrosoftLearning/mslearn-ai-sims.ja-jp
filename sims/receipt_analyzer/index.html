@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Receipt Analyzer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+  <h1 id="app-title" aria-label="Receipt Analyzer application">Receipt Analyzer</h1>
+  <button id="uploadBtn" class="btn" aria-label="Upload a receipt to analyze">Upload Receipt</button>
+    </header>
+
+    <main class="content">
+      <div class="left">
+  <div id="leftPlaceholder" class="placeholder" aria-label="No receipt selected">No receipt selected</div>
+  <!-- Image element will be created dynamically when a receipt is selected -->
+      </div>
+
+      <div class="right" id="rightContent" aria-label="Analysis results area">
+        <p aria-label="Instructions to select a receipt">Select a receipt to analyze using the "Upload Receipt" button.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Simulated file chooser modal -->
+  <div id="fileModal" class="modal" aria-hidden="true" aria-label="File selection modal">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="fileModalTitle" aria-label="Select a receipt dialog">
+      <div class="modal-header" aria-label="Dialog header">
+        <h2 id="fileModalTitle" aria-label="Select a receipt to upload">Select a receipt to upload</h2>
+        <button id="closeModal" class="close-btn" aria-label="Close file selection dialog">&times;</button>
+      </div>
+      <p class="modal-instructions" aria-label="Instructions for selecting a file">Choose a file from the simulated local folder:</p>
+      <ul id="fileList" class="file-list" role="listbox" aria-label="List of available receipts"></ul>
+
+      <div class="modal-footer" aria-label="Dialog footer">
+        <button id="cancelBtn" class="btn secondary" aria-label="Cancel file selection">Cancel</button>
+        <button id="openBtn" class="btn" disabled aria-label="Open selected receipt">Open</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <!-- Small, subdued disclaimer -->
+  <div class="disclaimer" aria-label="Disclaimer: AI-generated content may contain mistakes.">AI-generated content may contain mistakes.</div>
+</body>
+</html>
