@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard - Resume Matcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recruiter Dashboard</h1>
+            <p>Match candidates to opportunities and streamline your outreach process</p>
+        </header>
+
+        <main role="main">
+            <!-- Resume Upload Section -->
+            <section class="resume-section" role="region" aria-labelledby="resume-section-heading">
+                <h2 id="resume-section-heading">Step 1: Select Candidate Resume</h2>
+                <div class="upload-area">
+                    <button id="uploadBtn" class="upload-button" aria-label="Browse and select a candidate resume from the candidate pool">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Browse Candidate Pool
+                    </button>
+                    <p class="upload-text">Select from available candidate resumes</p>
+                </div>
+                <div id="selectedResume" class="selected-resume hidden">
+                    <h3>Selected Candidate:</h3>
+                    <div class="resume-preview"></div>
+                    <button id="changeResumeBtn" class="change-resume-btn" aria-label="Change the selected candidate resume">Change Candidate</button>
+                </div>
+            </section>
+
+            <!-- Job Listings Section -->
+            <section class="jobs-section" role="region" aria-labelledby="jobs-section-heading">
+                <h2 id="jobs-section-heading">Step 2: Select Job Opening</h2>
+                <div id="jobListings" class="job-listings" role="list" aria-label="Available job openings"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Resume Selection Modal -->
+    <div id="resumeModal" class="modal hidden" role="dialog" aria-labelledby="resume-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="resume-modal-title">Candidate Pool</h2>
+                <button class="close-button" data-modal="resumeModal" aria-label="Close candidate pool dialog">&times;</button>
+            </div>
+            <div id="resumeList" class="resume-list" role="list" aria-label="List of available candidate resumes"></div>
+        </div>
+    </div>
+
+    <!-- Send Email Confirmation Modal -->
+    <div id="confirmSendModal" class="modal hidden" role="dialog" aria-labelledby="confirmSendTitle" aria-modal="true">
+        <div class="modal-content confirm-modal-content">
+            <div class="modal-header">
+                <h2 id="confirmSendTitle">Confirm Email Send</h2>
+                <button class="close-button" data-modal="confirmSendModal" aria-label="Close confirmation dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-content">
+                    <div class="confirmation-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <p class="confirmation-message">Ready to send this email to <strong id="candidateName"></strong>?</p>
+                    <p class="confirmation-warning">The email will become read-only after sending.</p>
+                </div>
+                <div class="confirmation-actions">
+                    <button id="cancelSendBtn" class="cancel-button">Cancel</button>
+                    <button id="confirmSendBtn" class="confirm-button">Send Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Resume Modal -->
+    <div id="fullResumeModal" class="modal hidden" role="dialog" aria-labelledby="fullResumeTitle" aria-modal="true">
+        <div class="modal-content resume-modal-content">
+            <div class="modal-header">
+                <h2 id="fullResumeTitle">Resume</h2>
+                <button class="close-button" data-modal="fullResumeModal" aria-label="Close resume viewer">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="resumeContent" class="resume-content" aria-live="polite">
+                    <div class="loading-container">
+                        <div class="spinner" aria-hidden="true"></div>
+                        <span>Loading resume...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Comparison Modal -->
+    <div id="comparisonModal" class="modal hidden" role="dialog" aria-labelledby="comparisonTitle" aria-modal="true">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="comparisonTitle">Candidate-Job Match Analysis</h2>
+                <button class="close-button" data-modal="comparisonModal" aria-label="Close match analysis dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Loading State -->
+                <div id="comparisonLoading" class="comparison-loading-container hidden" aria-live="polite" aria-label="Analysis in progress">
+                    <div class="loading-container">
+                        <div class="spinner" aria-hidden="true"></div>
+                        <span>Comparing resume with job description...</span>
+                    </div>
+                </div>
+                
+                <!-- Comparison Results Content -->
+                <div id="comparisonResults" class="comparison-results" aria-live="polite" role="region" aria-label="Match analysis results">
+                <!-- Match Overview -->
+                <div class="match-overview" role="region" aria-labelledby="match-overview-heading">
+                    <div class="match-score">
+                        <div class="score-circle" role="img" aria-label="Overall match score">
+                            <span id="matchPercentage" aria-label="Match percentage">0%</span>
+                        </div>
+                        <p id="matchMessage" aria-live="polite"></p>
+                    </div>
+                    <div class="quick-stats" role="region" aria-label="Match statistics summary">
+                        <div class="stat-item" role="group" aria-labelledby="matched-skills-label">
+                            <span class="stat-number" id="matchedSkills" aria-describedby="matched-skills-label">0</span>
+                            <span class="stat-label" id="matched-skills-label">Matched Skills</span>
+                        </div>
+                        <div class="stat-item" role="group" aria-labelledby="missing-skills-label">
+                            <span class="stat-number" id="missingSkills" aria-describedby="missing-skills-label">0</span>
+                            <span class="stat-label" id="missing-skills-label">Skills Gap</span>
+                        </div>
+                        <div class="stat-item" role="group" aria-labelledby="experience-match-label">
+                            <span class="stat-number" id="experienceMatch" aria-describedby="experience-match-label">0%</span>
+                            <span class="stat-label" id="experience-match-label">Experience Fit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Analysis -->
+                <div class="skills-analysis" role="region" aria-labelledby="skills-assessment-heading">
+                    <h3 id="skills-assessment-heading">Skills Assessment</h3>
+                    <div id="skillsChart" class="skills-chart" role="img" aria-label="Skills comparison chart" aria-describedby="skills-assessment-heading"></div>
+                </div>
+
+                <!-- Outreach Email Section -->
+                <div id="outreachLetterSection" class="outreach-letter-section hidden" role="region" aria-labelledby="outreach-section-heading">
+                    <!-- Celebration Message (shown when good match) -->
+                    <div id="celebrationMessage" class="celebration-message" aria-live="polite">
+                        <h3 id="outreach-section-heading">🎉 Excellent Match Found!</h3>
+                        <p class="celebration-text">This candidate shows strong alignment with the role requirements. Ready to craft a personalized outreach message?</p>
+                        <button id="generateLetterBtn" class="generate-letter-btn" aria-label="Generate personalized outreach email for this candidate">Generate Outreach Email</button>
+                    </div>
+                    
+                    <!-- Generated Letter (shown after generation) -->
+                    <div id="generatedLetterContainer" class="generated-letter-container hidden" aria-live="polite">
+                        <h3>📧 Generated Outreach Email</h3>
+                        <p class="outreach-letter-intro">Personalized candidate outreach message with improvement recommendations (editable):</p>
+                        <textarea id="outreachLetter" class="outreach-letter-textarea" role="textbox" aria-label="Editable outreach email content" placeholder="Generating email content..."></textarea>
+                        <div class="outreach-letter-actions">
+                            <button id="sendBtn" class="send-button hidden" aria-label="Download the generated email text as a file">Download email text</button>
+                            <button id="sendEmailBtn" class="send-email-button hidden" aria-label="Send the email to the candidate">Send Email</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recruitment Recommendations -->
+                <div id="recruitmentSection" class="recruitment-section" role="region" aria-labelledby="recruitment-recommendations-heading">
+                    <h3 id="recruitment-recommendations-heading">🎯 Recruitment Recommendations</h3>
+                    <div id="recruitmentAdvice" class="recruitment-advice" aria-live="polite" role="article" aria-label="AI-generated recruitment recommendations"></div>
+                </div>
+                </div> <!-- End comparison-results -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- Small, subdued disclaimer -->
+    <div class="disclaimer" aria-label="Disclaimer: AI-generated content may contain mistakes.">AI-generated content may contain mistakes.</div>
+</body>
+</html>

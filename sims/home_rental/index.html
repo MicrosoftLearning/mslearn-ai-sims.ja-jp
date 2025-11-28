@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Rentals - Rent Predictor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 Home Rentals</h1>
+            <p>Predict rental prices in Dataville</p>
+        </header>
+
+        <main role="main">
+            <div class="prediction-form">
+                <h2>Calculate Rental Price</h2>
+                
+                <div class="form-group">
+                    <label for="postalCode">Postal Code:</label>
+                    <select id="postalCode" name="postalCode" aria-describedby="postal-help" aria-required="true">
+                        <option value="">Select a postal code...</option>
+                    </select>
+                    <div id="postal-help" class="sr-only">Choose the postal code area in Dataville for the rental property</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="size">Property Size: <span id="sizeDisplay" aria-live="polite">1500</span> sq ft</label>
+                    <input type="range" id="size" name="size" min="800" max="6000" value="1500" step="50" 
+                           aria-describedby="size-help" role="slider" 
+                           aria-valuemin="800" aria-valuemax="6000" aria-valuenow="1500">
+                    <div class="slider-labels" aria-hidden="true">
+                        <span>800</span>
+                        <span>6000</span>
+                    </div>
+                    <div id="size-help" class="sr-only">Adjust the property size in square feet using the slider or arrow keys</div>
+                </div>
+
+                <div class="form-group">
+                    <fieldset>
+                        <legend>Number of Bedrooms:</legend>
+                        <div id="bedroomOptions" class="bedroom-options" role="radiogroup" aria-describedby="bedroom-help">
+                            <!-- Radio buttons will be populated by JavaScript -->
+                        </div>
+                        <div id="bedroom-help" class="sr-only">Select the number of bedrooms in the rental property</div>
+                    </fieldset>
+                </div>
+
+                <button id="calculateBtn" class="btn btn-primary" aria-describedby="calc-help">Calculate Rent</button>
+                <div id="calc-help" class="sr-only">Click to predict the monthly rent based on your selections</div>
+            </div>
+
+            <div id="result" class="result-section" role="region" aria-live="polite" aria-label="Rent calculation results">
+                <!-- Results will be displayed here -->
+            </div>
+
+            <div class="action-buttons" role="navigation" aria-label="Additional actions">
+                <button id="sampleDataBtn" class="btn btn-secondary" aria-describedby="sample-help">Show Sample Data</button>
+                <button id="modelDetailsBtn" class="btn btn-secondary" aria-describedby="model-help">Show Model Details</button>
+                <div id="sample-help" class="sr-only">Display a random sample of 10 property records from the dataset</div>
+                <div id="sample-help-hide" class="sr-only">Hide the currently displayed sample property data</div>
+                <div id="model-help" class="sr-only">View technical details about the machine learning model and its performance</div>
+            </div>
+
+            <div id="sampleData" class="sample-data-section" role="region" aria-label="Sample property data">
+                <!-- Sample data table will be displayed here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Model Details -->
+    <div id="modelModal" class="modal" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-body" aria-hidden="true">
+        <div class="modal-content" role="document">
+            <div id="modalContent" aria-live="polite">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
