@@ -1,2 +1,9 @@
-# mslearn-ai-sims.ja-jp
-Store localized Japanese content of https://github.com/MicrosoftLearning/mslearn-ai-sims
+# Microsoft AI アプリケーション シミュレーション
+
+このリポジトリには、一般的な AI 機能とシナリオについて確認するために使用できるラボ演習と、それに関連するアプリケーション シミュレーションが含まれています。
+
+このリポジトリ内のアプリは、AI アプリケーション シナリオの "シミュレーション" です。** これらは教育目的で設計されたものです。
+
+サポート対象の Microsoft 製品またはサービスではありません。いかなる保証もなく現状のまま提供されます。
+
+演習については、[このリポジトリの GitHub サイト](https://microsoftlearning.github.io/mslearn-ai-sims/)を使用して確認してください。
